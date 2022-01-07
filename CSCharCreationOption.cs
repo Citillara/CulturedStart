@@ -7,75 +7,44 @@ namespace zCulturedStart
     public class CSCharCreationOption
     {
         private static int _CSSelcOption;
+        private static int _CSGameOption;
+        private static int _CSLocationOption;
+        private static int _CSSandboxToggle;
+        private static CultureObject _SelectedCulture;
 
-        //1 = Default 2 = merchant 3 = Exiled 4 = merc 5 = looter
+        //1 = Default 2 = Merchant 3 = Exiled 4 = Merc 5 = Looter
         public static int CSSelectOption
         {
-            get
-            {
-                return _CSSelcOption;
-            }
-            set
-            {
-                _CSSelcOption = value;
-            }
+            get => _CSSelcOption;
+            set => _CSSelcOption = value;
         }
 
-        private static int _CSGameOption;
-
-        //0 = FP default 1 = Fp nezzy 2 = fp sandbox 3 = default 4= nezzy 5 = sandbox no kingdom
+        //0 = FP Default 1 = FP Nezzy 2 = FP Sandbox 3 = Default 4 = Nezzy 5 = Sandbox No Kingdom
         public static int CSGameOption
         {
-            get
-            {
-                return _CSGameOption;
-            }
-            set
-            {
-                _CSGameOption = value;
-            }
+            get => _CSGameOption;
+            set => _CSGameOption = value;
         }
-        private static int _CSLocationOption;
 
-        //0 = home town 1 = Random location 2 - 8 = specific town
+        //0 = Hometown 1 = Random Location 2 - 8 = Specific Town
         public static int CSLocationOption
         {
-            get
-            {
-                return _CSLocationOption;
-            }
-            set
-            {
-                _CSLocationOption = value;
-            }
+            get => _CSLocationOption;
+            set => _CSLocationOption = value;
         }
 
-        public static int CSSandboxToggle //0= Story 1 = Sandbox
+        //0 = Story 1 = Sandbox
+        public static int CSSandboxToggle
         {
-            get
-            {
-                return _CSSandboxToggle;
-            }
-            set
-            {
-                _CSSandboxToggle = value;
-            }
+            get => _CSSandboxToggle;
+            set => _CSSandboxToggle = value;
         }
-
-        private static int _CSSandboxToggle;
 
         public static CultureObject SelectedCulture
         {
-            get
-            {
-                return _SelectedCulture;
-            }
-            set
-            {
-                _SelectedCulture = value;
-            }
+            get => _SelectedCulture;
+            set => _SelectedCulture = value;
         }
-        private static CultureObject _SelectedCulture;
         public static List<CultureObject> AddtlCulturesList;
 
         public static Settlement cultureSettlement(Hero hero)
