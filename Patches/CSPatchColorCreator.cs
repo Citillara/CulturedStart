@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaleWorlds.CampaignSystem.ViewModelCollection;
-using HarmonyLib;
+﻿using HarmonyLib;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.ViewModelCollection;
 
 namespace zCulturedStart
 {
     [HarmonyPatch(typeof(BannerEditorVM), "SetClanRelatedRules")]
     class CSPatchColorCreator
-    {                 
-        static bool Prefix(BannerEditorVM __instance, ref bool canChangeBackgroundColor)
-        {
-            if(Clan.PlayerClan.Kingdom != null && Clan.PlayerClan.Kingdom.Leader == Hero.MainHero) { 
-                canChangeBackgroundColor = true;
-            }
-            return true;
-        }
-        
+    {
+        static void Prefix(ref bool canChangeBackgroundColor) => canChangeBackgroundColor = Clan.PlayerClan.Kingdom != null && Clan.PlayerClan.Kingdom.Leader == Hero.MainHero;
     }
 }

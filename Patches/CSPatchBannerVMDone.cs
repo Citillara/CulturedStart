@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaleWorlds.CampaignSystem.ViewModelCollection;
-using HarmonyLib;
+﻿using HarmonyLib;
 using TaleWorlds.CampaignSystem;
-
+using TaleWorlds.CampaignSystem.ViewModelCollection;
 
 namespace zCulturedStart.Patches
 {
@@ -14,15 +8,12 @@ namespace zCulturedStart.Patches
     [HarmonyPatch(typeof(BannerEditorVM), "ExecuteDone")]
     class CSPatchBannerVMDone
     {
-        private static bool Prefix(BannerEditorVM __instance)
+        private static void Postfix()
         {
-            Action<bool> OnExit = (Action<bool>)AccessTools.Field(typeof(BannerEditorVM), "OnExit").GetValue(__instance);
-            OnExit(false);
-            if ((CSCharCreationOption.CSSelectOption==7 || CSCharCreationOption.CSSelectOption == 8) && Clan.PlayerClan.Kingdom == null) { 
+            if ((CSCharCreationOption.CSSelectOption == 7 || CSCharCreationOption.CSSelectOption == 8) && Clan.PlayerClan.Kingdom == null)
+            {
                 CSApplyChoices.CSCreateKingdom();
             }
-            return false;
-
         }
     }
 }

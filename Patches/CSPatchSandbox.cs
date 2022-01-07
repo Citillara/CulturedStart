@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HarmonyLib;
-using StoryMode;
-using StoryMode.CharacterCreationContent;
-using TaleWorlds.CampaignSystem.CharacterCreationContent;
+﻿using HarmonyLib;
 using TaleWorlds.CampaignSystem;
-
+using TaleWorlds.CampaignSystem.CharacterCreationContent;
+using TaleWorlds.Core;
 using TaleWorlds.Library;
 
-
 namespace zCulturedStart.Patches
-
 {
     [HarmonyPatch(typeof(SandboxCharacterCreationContent), "OnCharacterCreationFinalized")]
     class CSPatchSandbox
     {
-        private static bool Prefix()
+        private static void Postfix()
         {
             CSApplyChoices.ApplyStoryOptions();
-            Vec2 StartPos = CulturedStartLocPatch.GetSettlementLoc(CSCharCreationOption.CSOptionSettlement());           
-            MobileParty.MainParty.Position2D = StartPos;
-            return true;
+            if (CSCharCreationOption.CSLocationOption != 8 && CSCharCreationOption.CSLocationOption != 9)
+            {
+                Vec2 StartPos = CulturedStartLocPatch.GetSettlementLoc(CSCharCreationOption.CSOptionSettlement());
+                MobileParty.MainParty.Position2D = StartPos;
+                MapState mapstate = GameStateManager.Current.ActiveState as MapState;
+                mapstate.Handler.TeleportCameraToMainParty();
+            }
         }
     }
 }

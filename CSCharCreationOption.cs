@@ -1,26 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.Core;
-using TaleWorlds.ObjectSystem;
-using TaleWorlds.SaveSystem;
-using TaleWorlds.Library;
-using TaleWorlds.Localization;
-using StoryMode.CharacterCreationContent;
-using TaleWorlds.CampaignSystem.CharacterCreationContent;
 
 namespace zCulturedStart
 {
     public class CSCharCreationOption
     {
-        
         private static int _CSSelcOption;
 
-        // 1 = Default 2 = merchant 3 = Exiled 4 = merc 5 = looter
+        //1 = Default 2 = merchant 3 = Exiled 4 = merc 5 = looter
         public static int CSSelectOption
         {
             get
@@ -32,12 +20,10 @@ namespace zCulturedStart
                 _CSSelcOption = value;
             }
         }
-        
+
         private static int _CSGameOption;
 
-
-        // 0 = FP default 1 = Fp nezzy 2 = fp sandbox 3 = default 4= nezzy 5 = sandbox no kingdom
-        //[SaveableProperty(1)]
+        //0 = FP default 1 = Fp nezzy 2 = fp sandbox 3 = default 4= nezzy 5 = sandbox no kingdom
         public static int CSGameOption
         {
             get
@@ -51,8 +37,7 @@ namespace zCulturedStart
         }
         private static int _CSLocationOption;
 
-
-        // 0 = home town 1 = Random location 2 - 8 = specific town
+        //0 = home town 1 = Random location 2 - 8 = specific town
         public static int CSLocationOption
         {
             get
@@ -92,37 +77,30 @@ namespace zCulturedStart
         }
         private static CultureObject _SelectedCulture;
         public static List<CultureObject> AddtlCulturesList;
-        
+
         public static Settlement cultureSettlement(Hero hero)
         {
-            //var result;
             string sCulture = hero.MapFaction.Culture.StringId;
             switch (sCulture)
             {
-                
                 case "sturgia":
-                    return Settlement.Find("town_S2");         
+                    return Settlement.Find("town_S2");
                 case "aserai":
-                    return Settlement.Find("town_A8");       
+                    return Settlement.Find("town_A8");
                 case "vlandia":
-                    return Settlement.Find("town_V3");          
+                    return Settlement.Find("town_V3");
                 case "battania":
-                    return Settlement.Find("town_B2");                    
+                    return Settlement.Find("town_B2");
                 case "khuzait":
-                    return Settlement.Find("town_K4"); 
+                    return Settlement.Find("town_K4");
                 default:
-                    return Settlement.Find("town_ES3");                  
-                    
-
+                    return Settlement.Find("town_ES3");
             }
         }
         public static Settlement cultureSettlement(string sCulture)
         {
-            //var result;
-            //string sCulture = hero.MapFaction.Culture.StringId;
             switch (sCulture)
             {
-
                 case "sturgia":
                     return Settlement.Find("town_S2");
                 case "aserai":
@@ -135,18 +113,10 @@ namespace zCulturedStart
                     return Settlement.Find("town_K4");
                 default:
                     return Settlement.Find("town_EW2");
-
             }
         }
 
-
-        public static Settlement RandcultureSettlement()
-        {
-            //var result;
-            
-            return Settlement.FindAll((Settlement x) => x.IsTown).GetRandomElementInefficiently<Settlement>();
-            
-        }
+        public static Settlement RandcultureSettlement() => Settlement.FindAll((Settlement x) => x.IsTown).GetRandomElementInefficiently<Settlement>();
 
         public static Settlement CSOptionSettlement()
         {
@@ -174,8 +144,6 @@ namespace zCulturedStart
                 default:
                     return Settlement.Find("tutorial_training_field");
             }
-
-
         }
     }
 }

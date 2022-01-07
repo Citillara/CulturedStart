@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HarmonyLib;
-using StoryMode;
-using StoryMode.CharacterCreationContent;
-using TaleWorlds.CampaignSystem.CharacterCreationContent;
+﻿using HarmonyLib;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.CharacterCreationContent;
 using TaleWorlds.ObjectSystem;
 
 namespace zCulturedStart.Patches
@@ -16,8 +9,7 @@ namespace zCulturedStart.Patches
     class CSPatchSandboxAddMenus
     {
         //Duplicating for sandbox start
-        private static bool Prefix(CharacterCreation characterCreation)
-        //private static void Test(CharacterCreation characterCreation)
+        private static void Prefix(CharacterCreation characterCreation)
         {
             //Change here to make addtl cultures first one to load
             int maincultures = 0;
@@ -40,12 +32,6 @@ namespace zCulturedStart.Patches
                 CultureStartOptions.AddStartOption(characterCreation);
                 CultureStartOptions.AddStartLocation(characterCreation);
             }
-
-            //CultureStartOptions.AddStartOption(characterCreation, CharacterCreationContent.Instance);
-
-            //CultureStartOptions.AddStartLocation(characterCreation);
-            return true;
-
         }
     }
 }
