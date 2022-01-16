@@ -76,22 +76,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSApplyChoices.cs" />
-    <Compile Include="Patches\CSPatchSandbox.cs" />
-    <Compile Include="Patches\CSPatchSandboxAddMenus.cs" />
-    <Compile Include="Patches\CSPatchBannerVMDone.cs" />
-    <Compile Include="Patches\CSPatchColorCreator.cs" />
-    <Compile Include="Patches\CSBehaviourPatch.cs" />
-    <Compile Include="Patches\CSPatchAddMenus.cs" />
-    <Compile Include="CSCharCreationOption.cs" />
-    <Compile Include="CSCharContent.cs" />
-    <Compile Include="Patches\CSPatchDisableTutorial.cs" />
-    <Compile Include="Patches\CSEscapePatch.cs" />
-    <Compile Include="CSQuestBehaviour.cs" />
-    <Compile Include="Patches\CSPatchOnSettleLeft.cs" />
-    <Compile Include="Patches\CSPatchTalkWithNoble.cs" />
-    <Compile Include="CulturedStartInit.cs" />
-    <Compile Include="CulturedStartLocation.cs" />
+    <Compile Include="CulturedStartCharacterCreationContent.cs" />
+    <Compile Include="Patches\CSPatchCharacterCreationOption.cs" />
+    <Compile Include="Patches\CSPatchCharacterCreationContent.cs" />
+    <Compile Include="CulturedStartHelper.cs" />
+    <Compile Include="Patches\CSPatchBannerInvestigationQuest.cs" />
+    <Compile Include="CulturedStartSubModule.cs" />
+    <Compile Include="Patches\CSPatchCampaignBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
