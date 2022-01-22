@@ -261,7 +261,7 @@ namespace zCulturedStart
         {
             //This is from cheat, works but not thoroughly tested
             Kingdom kingdom = MBObjectManager.Instance.CreateObject<Kingdom>("player_kingdom");
-            TextObject textObject = new TextObject("{=yGaGlXgQ}Player Kingdom", null);
+            TextObject textObject = new TextObject("{=CulturedStart48}Player Kingdom", null);
             kingdom.InitializeKingdom(textObject, textObject, Clan.PlayerClan.Culture, Clan.PlayerClan.Banner, Clan.PlayerClan.Color, Clan.PlayerClan.Color2, StartingSettlement, null, null, null);
             ChangeKingdomAction.ApplyByCreateKingdom(Clan.PlayerClan, kingdom, false);
             kingdom.RulingClan = Clan.PlayerClan;
@@ -326,19 +326,6 @@ namespace zCulturedStart
             }
         }
 
-        public static Vec2 StartingPosition
-        {
-            get
-            {
-                if (LocationOption != 9)
-                {
-                    return StartingSettlement.GatePosition;
-                }
-                else
-                {
-                    return CaptorToEscapeFrom.PartyBelongedTo.Position2D;
-                }
-            }
-        }
+        public static Vec2 StartingPosition => LocationOption != 9 ? StartingSettlement.GatePosition : CaptorToEscapeFrom.PartyBelongedTo.Position2D;
     }
 }

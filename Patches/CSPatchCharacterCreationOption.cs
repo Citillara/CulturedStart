@@ -40,15 +40,15 @@ namespace zCulturedStart.Patches
             {
                 if (skills.Count == 3)
                 {
-                    return new TextObject("{EXP_VALUE} Skill {?IS_PLURAL_SKILL}Levels{?}Level{\\?} and {FOCUS_VALUE} Focus {?IS_PLURAL_FOCUS}Points{?}Point{\\?} to {SKILL_ONE}, {SKILL_TWO} and {SKILL_THREE}{NEWLINE}{TRAIT_DESC}{RENOWN_DESC}{GOLD_DESC}");
+                    return new TextObject("{=CulturedStart49}{EXP_VALUE} Skill {?IS_PLURAL_SKILL}Levels{?}Level{\\?} and {FOCUS_VALUE} Focus {?IS_PLURAL_FOCUS}Points{?}Point{\\?} to {SKILL_ONE}, {SKILL_TWO} and {SKILL_THREE}{NEWLINE}{TRAIT_DESC}{RENOWN_DESC}{GOLD_DESC}");
                 }
                 else if (skills.Count == 2)
                 {
-                    return new TextObject("{EXP_VALUE} Skill {?IS_PLURAL_SKILL}Levels{?}Level{\\?} and {FOCUS_VALUE} Focus {?IS_PLURAL_FOCUS}Points{?}Point{\\?} to {SKILL_ONE} and {SKILL_TWO}{NEWLINE}{TRAIT_DESC}{RENOWN_DESC}{GOLD_DESC}");
+                    return new TextObject("{=CulturedStart50}{EXP_VALUE} Skill {?IS_PLURAL_SKILL}Levels{?}Level{\\?} and {FOCUS_VALUE} Focus {?IS_PLURAL_FOCUS}Points{?}Point{\\?} to {SKILL_ONE} and {SKILL_TWO}{NEWLINE}{TRAIT_DESC}{RENOWN_DESC}{GOLD_DESC}");
                 }
                 else if (skills.Count == 1)
                 {
-                    return new TextObject("{EXP_VALUE} Skill {?IS_PLURAL_SKILL}Levels{?}Level{\\?} and {FOCUS_VALUE} Focus {?IS_PLURAL_FOCUS}Points{?}Point{\\?} to {SKILL_ONE}{NEWLINE}{TRAIT_DESC}{RENOWN_DESC}{GOLD_DESC}");
+                    return new TextObject("{=CulturedStart51}{EXP_VALUE} Skill {?IS_PLURAL_SKILL}Levels{?}Level{\\?} and {FOCUS_VALUE} Focus {?IS_PLURAL_FOCUS}Points{?}Point{\\?} to {SKILL_ONE}{NEWLINE}{TRAIT_DESC}{RENOWN_DESC}{GOLD_DESC}");
                 }
                 else
                 {

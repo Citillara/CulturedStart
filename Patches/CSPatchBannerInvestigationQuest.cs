@@ -3,7 +3,7 @@ using StoryMode.Behaviors.Quests.FirstPhase;
 
 namespace zCulturedStart
 {
-    [HarmonyPatch(typeof(BannerInvestigationQuest), "InitializeNotablesToTalkList")]
+    [HarmonyPatch(typeof(BannerInvestigationQuest), "OnStartQuest")]
     public class CSPatchBannerInvestigationQuest
     {
         private static void Postfix(BannerInvestigationQuest __instance)

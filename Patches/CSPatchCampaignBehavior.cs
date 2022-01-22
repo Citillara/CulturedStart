@@ -2,6 +2,7 @@
 using StoryMode;
 using StoryMode.Behaviors;
 using StoryMode.StoryModeObjects;
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 
 namespace zCulturedStart.Patches
@@ -23,6 +24,7 @@ namespace zCulturedStart.Patches
             private static bool Prefix()
             {
                 DisableHeroAction.Apply(StoryModeHeroes.ElderBrother);
+                StoryModeHeroes.ElderBrother.Clan = CampaignData.NeutralFaction;
                 return false;
             }
         }
