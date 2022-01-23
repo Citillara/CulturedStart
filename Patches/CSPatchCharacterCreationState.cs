@@ -7,6 +7,7 @@ namespace zCulturedStart.Patches
     [HarmonyPatch(typeof(CharacterCreationState), "OnInitialize")]
     public class CSPatchCharacterCreationState
     {
+        // Skip character creation.
         public static void Postfix(CharacterCreationState __instance)
         {
             if (CulturedStartSettings.Instance.ShouldSkipCharacterCreation)

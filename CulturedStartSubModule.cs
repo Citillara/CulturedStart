@@ -7,6 +7,7 @@ using zCulturedStart.Patches;
 
 namespace zCulturedStart
 {
+    // This mod adds new character creation options to customize the game start. It is a fork of the original mod by Barhidous, which I took over after it was discontinued.
     public class CulturedStartSubModule : MBSubModuleBase
     {
         protected override void OnSubModuleLoad()
@@ -14,6 +15,7 @@ namespace zCulturedStart
             _harmony = new Harmony("mod.bannerlord.culturedstart");
             _harmony.PatchAll();
         }
+        // Skip the TW logo.
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
         {
             if (CulturedStartSettings.Instance.ShouldSkipTWLogo)
@@ -21,6 +23,7 @@ namespace zCulturedStart
                 AccessTools.Field(typeof(Module), "_splashScreenPlayed").SetValue(Module.CurrentModule, true);
             }
         }
+        // Skip the campaign intro.
         protected override void OnGameStart(Game game, IGameStarter gameStarter)
         {
             if (CulturedStartSettings.Instance.ShouldSkipCampaignIntro)

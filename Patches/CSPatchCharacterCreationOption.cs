@@ -11,6 +11,7 @@ namespace zCulturedStart.Patches
     [HarmonyPatch(typeof(CharacterCreationOption), "SetTextVariables")]
     public class CSPatchCharacterCreationOption
     {
+        // Get the text to change and the attribute points to add.
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
@@ -34,6 +35,7 @@ namespace zCulturedStart.Patches
             }
             return codes;
         }
+        // Remove redundant text if the attribute points to add is 0.
         public static TextObject RemoveZeroPointText(string text, List<SkillObject> skills, int attributeLevelToAdd)
         {
             if (attributeLevelToAdd == 0)

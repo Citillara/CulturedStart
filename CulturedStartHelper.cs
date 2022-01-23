@@ -5,7 +5,6 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
-using TaleWorlds.Localization;
 using TaleWorlds.ObjectSystem;
 
 namespace zCulturedStart
@@ -257,15 +256,7 @@ namespace zCulturedStart
 
         private static void AddCastle() => ChangeOwnerOfSettlementAction.ApplyByKingDecision(Hero.MainHero, CastleToAdd);
 
-        private static void CreateKingdom()
-        {
-            //This is from cheat, works but not thoroughly tested
-            Kingdom kingdom = MBObjectManager.Instance.CreateObject<Kingdom>("player_kingdom");
-            TextObject textObject = new TextObject("{=CulturedStart48}Player Kingdom", null);
-            kingdom.InitializeKingdom(textObject, textObject, Clan.PlayerClan.Culture, Clan.PlayerClan.Banner, Clan.PlayerClan.Color, Clan.PlayerClan.Color2, StartingSettlement, null, null, null);
-            ChangeKingdomAction.ApplyByCreateKingdom(Clan.PlayerClan, kingdom, false);
-            kingdom.RulingClan = Clan.PlayerClan;
-        }
+        private static void CreateKingdom() => Campaign.Current.KingdomManager.CreateKingdom(Clan.PlayerClan.Name, Clan.PlayerClan.InformalName, Clan.PlayerClan.Culture, Clan.PlayerClan);
 
         private static void EscapeFromCaptor() //Escaped Prisoner start 
         {

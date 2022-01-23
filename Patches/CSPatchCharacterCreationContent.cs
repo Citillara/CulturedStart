@@ -16,6 +16,7 @@ namespace zCulturedStart.Patches
                 yield return AccessTools.Method(typeof(SandboxCharacterCreationContent), "OnInitialized");
                 yield return AccessTools.Method(typeof(StoryModeCharacterCreationContent), "OnInitialized");
             }
+            // Add the custom character creation menus.
             protected static void Postfix(MethodBase __originalMethod, CharacterCreation characterCreation)
             {
                 CulturedStartCharacterCreationContent characterCreationContent = new CulturedStartCharacterCreationContent();

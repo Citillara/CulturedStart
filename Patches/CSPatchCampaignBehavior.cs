@@ -12,6 +12,7 @@ namespace zCulturedStart.Patches
         [HarmonyPatch(typeof(TrainingFieldCampaignBehavior), "OnCharacterCreationIsOver")]
         public class CSPatchTrainingFieldCampaignBehavior
         {
+            // Skip the tutorial.
             private static void Prefix(ref bool ___SkipTutorialMission)
             {
                 ___SkipTutorialMission = true;
@@ -21,6 +22,7 @@ namespace zCulturedStart.Patches
         [HarmonyPatch(typeof(TutorialPhaseCampaignBehavior), "OnStoryModeTutorialEnded")]
         public class CSPatchTutorialPhaseCampaignBehavior
         {
+            // Skip the vanilla code that sets the player's items and gold.
             private static bool Prefix()
             {
                 DisableHeroAction.Apply(StoryModeHeroes.ElderBrother);

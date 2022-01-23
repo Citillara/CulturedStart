@@ -7,6 +7,7 @@ namespace zCulturedStart.Patches
 {
     public class CSPatchGameManager
     {
+        // Remove the instructions which play the campaign intro.
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
