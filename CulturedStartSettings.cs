@@ -1,5 +1,6 @@
 ﻿using MCM.Abstractions.Attributes;
 using MCM.Abstractions.Attributes.v2;
+using MCM.Abstractions.Dropdown;
 using MCM.Abstractions.Settings.Base.Global;
 
 namespace zCulturedStart
@@ -16,8 +17,8 @@ namespace zCulturedStart
         [SettingPropertyBool("{=CulturedStart54}Skip Campaign Intro", Order = 1, RequireRestart = false, HintText = "{=CulturedStart55}Skip the campaign intro. Enabled by default.")]
         [SettingPropertyGroup("{=CulturedStart51}Debug", GroupOrder = 0)]
         public bool ShouldSkipCampaignIntro { get; set; } = true;
-        [SettingPropertyBool("{=CulturedStart56}Skip Character Creation", Order = 2, RequireRestart = false, HintText = "{=CulturedStart57}Skip character creation and start with a random culture and all other options set to default. Disabled by default.")]
+        [SettingPropertyDropdown("{=CulturedStart56}Skip Character Creation Menus", Order = 2, RequireRestart = false, HintText = "{=CulturedStart57}Skip character creation menus and start with a random culture and skipped options set to default. Default is None.")]
         [SettingPropertyGroup("{=CulturedStart51}Debug", GroupOrder = 0)]
-        public bool ShouldSkipCharacterCreation { get; set; } = false;
+        public DropdownDefault<string> MenusToSkip { get; set; } = new DropdownDefault<string>(new string[] { "{=CulturedStart58}None", "{=CulturedStart59}Base", "{=CulturedStart60}All" }, 0);
     }
 }

@@ -56,6 +56,9 @@
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\TaleWorlds.CampaignSystem.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="TaleWorlds.CampaignSystem.ViewModelCollection">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\TaleWorlds.CampaignSystem.ViewModelCollection.dll</HintPath>
+    </Reference>
     <Reference Include="TaleWorlds.Core">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\TaleWorlds.Core.dll</HintPath>
       <Private>False</Private>
@@ -80,6 +83,7 @@
   <ItemGroup>
     <Compile Include="CulturedStartCharacterCreationContent.cs" />
     <Compile Include="CulturedStartSettings.cs" />
+    <Compile Include="Patches\CSPatchCharacterCreationStageVM.cs" />
     <Compile Include="Patches\CSPatchCharacterCreationOption.cs" />
     <Compile Include="Patches\CSPatchCharacterCreationContent.cs" />
     <Compile Include="CulturedStartHelper.cs" />

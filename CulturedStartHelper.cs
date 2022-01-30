@@ -120,7 +120,7 @@ namespace zCulturedStart
         private static void SetEquipment(Hero hero, int tier)
         {
             CharacterObject idealTroop = (from character in CharacterObject.All
-                                          where character.Tier == tier && character.Culture == hero.Culture && !character.IsHero && character.Equipment.GetHumanBodyArmorSum() > 0
+                                          where character.Tier == tier && character.Culture == hero.Culture && !character.IsHero && !character.Equipment.IsEmpty()
                                           select character).GetRandomElementInefficiently();
             Equipment equipment = idealTroop.Equipment;
             hero.BattleEquipment.FillFrom(equipment);
