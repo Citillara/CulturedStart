@@ -24,7 +24,7 @@ namespace zCulturedStart
             }
         }
         // Skip the campaign intro.
-        protected override void OnGameStart(Game game, IGameStarter gameStarter)
+        public override void OnNewGameCreated(Game game, object initializerObject)
         {
             if (CulturedStartSettings.Instance.ShouldSkipCampaignIntro)
             {
