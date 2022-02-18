@@ -2,6 +2,7 @@
 using StoryMode;
 using StoryMode.Behaviors;
 using StoryMode.StoryModeObjects;
+using StoryMode.StoryModePhases;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 
@@ -16,6 +17,7 @@ namespace zCulturedStart.Patches
             private static void Prefix(ref bool ___SkipTutorialMission)
             {
                 ___SkipTutorialMission = true;
+                TutorialPhase.Instance.PlayerTalkedWithBrotherForTheFirstTime();
                 StoryModeManager.Current.MainStoryLine.CompleteTutorialPhase(true);
             }
         }
