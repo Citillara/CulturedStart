@@ -35,8 +35,9 @@ namespace zCulturedStart.Patches
             }
             return codes;
         }
+
         // Remove redundant text if the attribute points to add is 0.
-        public static TextObject RemoveZeroPointText(string text, List<SkillObject> skills, int attributeLevelToAdd)
+        private static TextObject RemoveZeroPointText(string text, List<SkillObject> skills, int attributeLevelToAdd)
         {
             if (attributeLevelToAdd == 0)
             {

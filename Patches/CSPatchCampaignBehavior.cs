@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 using StoryMode;
-using StoryMode.Behaviors;
+using StoryMode.GameComponents.CampaignBehaviors;
 using StoryMode.StoryModeObjects;
 using StoryMode.StoryModePhases;
 using TaleWorlds.CampaignSystem;
@@ -18,9 +18,10 @@ namespace zCulturedStart.Patches
             {
                 ___SkipTutorialMission = true;
                 TutorialPhase.Instance.PlayerTalkedWithBrotherForTheFirstTime();
-                StoryModeManager.Current.MainStoryLine.CompleteTutorialPhase(true);
+                StoryModeManager.Current.MainStoryLine.CompleteTutorialPhase(false);
             }
         }
+
         [HarmonyPatch(typeof(TutorialPhaseCampaignBehavior), "OnStoryModeTutorialEnded")]
         public class CSPatchTutorialPhaseCampaignBehavior
         {

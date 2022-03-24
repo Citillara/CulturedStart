@@ -3,6 +3,9 @@ using MountAndBlade.CampaignBehaviors;
 using System.Linq;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
+using TaleWorlds.CampaignSystem.GameState;
+using TaleWorlds.CampaignSystem.Party;
+using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.ObjectSystem;
@@ -11,9 +14,60 @@ namespace zCulturedStart
 {
     public static class CulturedStartHelper
     {
+        // 0 = Default, 1 = Skip
+        public static int QuestOption { get; set; }
+
+        // 0 = Default, 1 = Merchant, 2 = Exiled, 3 = Mercenary, 4 = Looter, 5 = Vassal, 6 = Kingdom, 7 = Holding, 8 = Landed Vassal, 9 = Escaped Prisoner
+        public static int StartOption { get; set; }
+
+        // 0 = Hometown, 1 = Random, 2 - 7 = Specific Town, 8 = Castle, 9 = Escaping
+        public static int LocationOption { get; set; }
+
+        public static Settlement CastleToAdd { get; set; }
+
+        public static Hero CaptorToEscapeFrom { get; set; }
+
+        public static Settlement StartingSettlement
+        {
+            get
+            {
+                switch (LocationOption)
+                {
+                    case 0:
+                        return Hero.MainHero.HomeSettlement;
+                    case 1:
+                        return Settlement.FindAll(settlement => settlement.IsTown).GetRandomElementInefficiently();
+                    case 2:
+                        return Settlement.Find("town_A8");
+                    case 3:
+                        return Settlement.Find("town_B2");
+                    case 4:
+                        return Settlement.Find("town_EW2");
+                    case 5:
+                        return Settlement.Find("town_S2");
+                    case 6:
+                        return Settlement.Find("town_K4");
+                    case 7:
+                        return Settlement.Find("town_V3");
+                    case 8:
+                        return CastleToAdd;
+                    default:
+                        return Settlement.Find("tutorial_training_field");
+                }
+            }
+        }
+
+        public static Vec2 StartingPosition => LocationOption != 9 ? StartingSettlement.GatePosition : CaptorToEscapeFrom.PartyBelongedTo.Position2D;
+
+        public static void SetQuestOption(int questOption) => QuestOption = questOption;
+
+        public static void SetStartOption(int startOption) => StartOption = startOption;
+
+        public static void SetLocationOption(int locationOption) => LocationOption = locationOption;
+
         public static void ApplyStartOptions()
         {
-            //Take away all the stuff to apply to each option
+            // Take away all the stuff to apply to each option
             GiveGoldAction.ApplyBetweenCharacters(Hero.MainHero, null, Hero.MainHero.Gold, true);
             PartyBase.MainParty.ItemRoster.Clear();
             SetCastleToAdd();
@@ -21,29 +75,29 @@ namespace zCulturedStart
             MobileParty.MainParty.Position2D = StartingPosition;
             if (GameStateManager.Current.ActiveState is MapState mapState)
             {
-                mapState.Handler.ResetCamera();
+                mapState.Handler.ResetCamera(true, true);
                 mapState.Handler.TeleportCameraToMainParty();
             }
             switch (StartOption)
             {
-                case 0: //Default
+                case 0: // Default
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 1000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 2);
                     break;
-                case 1: //Merchant
+                case 1: // Merchant
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 1600, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 2);
                     PartyBase.MainParty.ItemRoster.AddToCounts(MBObjectManager.Instance.GetObject<ItemObject>("mule"), 5);
                     AddTroops(1, 5);
                     AddTroops(2, 3);
                     break;
-                case 2: //Exiled
+                case 2: // Exiled
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 3000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 2);
                     AddExiledHero();
                     SetRelationWithRuler();
                     break;
-                case 3: //Mercenary
+                case 3: // Mercenary
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 250, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 1);
                     AddTroops(1, 10);
@@ -55,7 +109,7 @@ namespace zCulturedStart
                                                             where character.Tier == 3 && character.Culture == Hero.MainHero.Culture && !character.IsHero && (character.Occupation == Occupation.Soldier || character.Occupation == Occupation.Mercenary)
                                                             select character).GetRandomElementInefficiently().Equipment);
                     break;
-                case 4: //Looter
+                case 4: // Looter
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 40, true);
                     AddLooters(7);
                     foreach (Kingdom kingdom in Campaign.Current.Kingdoms)
@@ -63,7 +117,7 @@ namespace zCulturedStart
                         ChangeCrimeRatingAction.Apply(kingdom.MapFaction, 50, false);
                     }
                     break;
-                case 5: //Vassal
+                case 5: // Vassal
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 3000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 2);
                     SetMainHeroAsVassal();
@@ -71,7 +125,7 @@ namespace zCulturedStart
                     AddTroops(1, 10);
                     AddTroops(2, 4);
                     break;
-                case 6: //Kingdom
+                case 6: // Kingdom
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 8000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 15);
                     AddTroops(1, 31);
@@ -85,7 +139,7 @@ namespace zCulturedStart
                     AddCompanionParties(2);
                     AddCompanions(1);
                     break;
-                case 7: //Holding
+                case 7: // Holding
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 10000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 15);
                     AddCastle();
@@ -98,7 +152,7 @@ namespace zCulturedStart
                     SetEquipment(Hero.MainHero, 5);
                     AddCompanionParties(1);
                     break;
-                case 8: //Landed Vassal
+                case 8: // Landed Vassal
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 10000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 2);
                     SetMainHeroAsVassal();
@@ -107,14 +161,14 @@ namespace zCulturedStart
                     AddTroops(1, 10);
                     AddTroops(2, 4);
                     break;
-                case 9: //Escaped Prisoner
+                case 9: // Escaped Prisoner
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 1);
                     EscapeFromCaptor();
                     break;
                 default:
                     break;
             }
-            //Culture swap
+            // Culture swap
         }
 
         private static void SetEquipment(Hero hero, int tier)
@@ -145,11 +199,11 @@ namespace zCulturedStart
         private static void SetMainHeroAsVassal()
         {
             Hero mainHero = Hero.MainHero;
-            //Find a clan that matches culture
+            // Find a clan that matches culture
             Hero lord = Hero.FindAll(hero => (hero.Culture == mainHero.Culture) && hero.IsAlive && hero.IsFactionLeader && !hero.MapFaction.IsMinorFaction).GetRandomElementInefficiently();
             if (lord != null)
             {
-                //Adding to prevent crash on custom cultures with no kingdom
+                // Adding to prevent crash on custom cultures with no kingdom
                 Clan targetclan = lord.Clan;
                 CharacterRelationManager.SetHeroRelation(mainHero, lord, 10);
                 ChangeKingdomAction.ApplyByJoinToKingdom(mainHero.Clan, targetclan.Kingdom, false);
@@ -163,7 +217,7 @@ namespace zCulturedStart
             castle = (from settlement in Settlement.All
                       where settlement.Culture == Hero.MainHero.Culture && settlement.IsCastle
                       select settlement).GetRandomElementInefficiently();
-            if (castle == null) //Adding this for custom cultures that don't have any land to start
+            if (castle == null) // Adding this for custom cultures that don't have any land to start
             {
                 castle = (from settlement in Settlement.All
                           where settlement.IsCastle
@@ -187,7 +241,7 @@ namespace zCulturedStart
             PartyBase.MainParty.AddElementToMemberRoster(troop, num, false);
         }
 
-        private static void AddLooters(int num) //Dual purpose cause lazy, adds looters and sets player's gear as looter
+        private static void AddLooters(int num) // Dual purpose cause lazy, adds looters and sets player's gear as looter
         {
             CharacterObject character = MBObjectManager.Instance.GetObject<CharacterObject>("looter");
             PartyBase.MainParty.AddElementToMemberRoster(character, num, false);
@@ -258,65 +312,16 @@ namespace zCulturedStart
 
         private static void CreateKingdom() => Campaign.Current.KingdomManager.CreateKingdom(Clan.PlayerClan.Name, Clan.PlayerClan.InformalName, Clan.PlayerClan.Culture, Clan.PlayerClan);
 
-        private static void EscapeFromCaptor() //Escaped Prisoner start 
+        private static void EscapeFromCaptor() // Escaped Prisoner start 
         {
             if (CaptorToEscapeFrom != null)
             {
                 CharacterRelationManager.SetHeroRelation(Hero.MainHero, CaptorToEscapeFrom, -50);
             }
-            //Using Looter gear as baseline
+            // Using Looter gear as baseline
             CharacterObject character = MBObjectManager.Instance.GetObject<CharacterObject>("looter");
             Hero.MainHero.BattleEquipment.FillFrom(character.Equipment);
             Hero.MainHero.CivilianEquipment.FillFrom(character.Equipment);
         }
-
-        public static void SetQuestOption(int questOption) => QuestOption = questOption;
-        public static void SetStartOption(int startOption) => StartOption = startOption;
-        public static void SetLocationOption(int locationOption) => LocationOption = locationOption;
-
-        //0 = Default, 1 = Skip
-        public static int QuestOption { get; set; }
-
-        //0 = Default, 1 = Merchant, 2 = Exiled, 3 = Mercenary, 4 = Looter, 5 = Vassal, 6 = Kingdom, 7 = Holding, 8 = Landed Vassal, 9 = Escaped Prisoner
-        public static int StartOption { get; set; }
-
-        //0 = Hometown, 1 = Random, 2 - 7 = Specific Town, 8 = Castle, 9 = Escaping
-        public static int LocationOption { get; set; }
-
-        public static Settlement CastleToAdd { get; set; }
-
-        public static Hero CaptorToEscapeFrom { get; set; }
-
-        public static Settlement StartingSettlement
-        {
-            get
-            {
-                switch (LocationOption)
-                {
-                    case 0:
-                        return Hero.MainHero.HomeSettlement;
-                    case 1:
-                        return Settlement.FindAll(settlement => settlement.IsTown).GetRandomElementInefficiently();
-                    case 2:
-                        return Settlement.Find("town_A8");
-                    case 3:
-                        return Settlement.Find("town_B2");
-                    case 4:
-                        return Settlement.Find("town_EW2");
-                    case 5:
-                        return Settlement.Find("town_S2");
-                    case 6:
-                        return Settlement.Find("town_K4");
-                    case 7:
-                        return Settlement.Find("town_V3");
-                    case 8:
-                        return CastleToAdd;
-                    default:
-                        return Settlement.Find("tutorial_training_field");
-                }
-            }
-        }
-
-        public static Vec2 StartingPosition => LocationOption != 9 ? StartingSettlement.GatePosition : CaptorToEscapeFrom.PartyBelongedTo.Position2D;
     }
 }

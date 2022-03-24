@@ -18,6 +18,7 @@ namespace zCulturedStart.Patches
                 characterCreationContent.SetSelectedCulture(characterCreationContent.GetCultures().GetRandomElementInefficiently(), __instance.CharacterCreation);
             }
         }
+
         // Skip character creation.
         [HarmonyPostfix]
         [HarmonyPatch("NextStage")]
