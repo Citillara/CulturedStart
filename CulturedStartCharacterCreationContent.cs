@@ -7,6 +7,8 @@ namespace zCulturedStart
 {
     public class CulturedStartCharacterCreationContent : SandboxCharacterCreationContent
     {
+        protected CulturedStartManager Manager => CulturedStartManager.Current;
+
         public void AddQuestMenu(CharacterCreation characterCreation)
         {
             CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=CulturedStart01}Quest Options", null), new TextObject("{=CulturedStart02}How do you want to handle your quests?", null), null, CharacterCreationMenu.MenuTypes.MultipleChoice);
@@ -84,54 +86,54 @@ namespace zCulturedStart
 
         protected void StartOnInit(CharacterCreation characterCreation) => MBTextManager.SetTextVariable("CULTURE", Instance.GetSelectedCulture().Name);
 
-        protected void DefaultQuestOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetQuestOption(0);
+        protected void DefaultQuestOnConsequence(CharacterCreation characterCreation) => Manager.SetQuestOption(0);
 
-        protected void SkipQuestOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetQuestOption(1);
+        protected void SkipQuestOnConsequence(CharacterCreation characterCreation) => Manager.SetQuestOption(1);
 
-        protected void DefaultStartOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetStartOption(0);
+        protected void DefaultStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(0);
 
-        protected void MerchantStartOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetStartOption(1);
+        protected void MerchantStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(1);
 
-        protected void ExiledStartOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetStartOption(2);
+        protected void ExiledStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(2);
 
-        protected void MercenaryStartOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetStartOption(3);
+        protected void MercenaryStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(3);
 
-        protected void LooterStartOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetStartOption(4);
+        protected void LooterStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(4);
 
-        protected void VassalStartOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetStartOption(5);
+        protected void VassalStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(5);
 
-        protected void KingdomStartOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetStartOption(6);
+        protected void KingdomStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(6);
 
-        protected void HoldingStartOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetStartOption(7);
+        protected void HoldingStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(7);
 
-        protected void LandedVassalStartOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetStartOption(8);
+        protected void LandedVassalStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(8);
 
-        protected void EscapedStartOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetStartOption(9);
+        protected void EscapedStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(9);
 
-        protected void HometownLocationOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetLocationOption(0); // Hometown
+        protected void HometownLocationOnConsequence(CharacterCreation characterCreation) => Manager.SetLocationOption(0); // Hometown
 
-        protected void RandomLocationOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetLocationOption(1); // Random
+        protected void RandomLocationOnConsequence(CharacterCreation characterCreation) => Manager.SetLocationOption(1); // Random
 
-        protected void QasariLocationOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetLocationOption(2); // Aserai
+        protected void QasariLocationOnConsequence(CharacterCreation characterCreation) => Manager.SetLocationOption(2); // Aserai
 
-        protected void DunglanysLocationOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetLocationOption(3); // Battania
+        protected void DunglanysLocationOnConsequence(CharacterCreation characterCreation) => Manager.SetLocationOption(3); // Battania
 
-        protected void ZeonicaLocationOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetLocationOption(4); // Empire
+        protected void ZeonicaLocationOnConsequence(CharacterCreation characterCreation) => Manager.SetLocationOption(4); // Empire
 
-        protected void BalgardLocationOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetLocationOption(5); // Sturgia
+        protected void BalgardLocationOnConsequence(CharacterCreation characterCreation) => Manager.SetLocationOption(5); // Sturgia
 
-        protected void OrtongardLocationOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetLocationOption(6); // Khuzait
+        protected void OrtongardLocationOnConsequence(CharacterCreation characterCreation) => Manager.SetLocationOption(6); // Khuzait
 
-        protected void PravendLocationOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetLocationOption(7); // Vlandia
+        protected void PravendLocationOnConsequence(CharacterCreation characterCreation) => Manager.SetLocationOption(7); // Vlandia
 
-        protected void CastleLocationOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetLocationOption(8); // Castle
+        protected void CastleLocationOnConsequence(CharacterCreation characterCreation) => Manager.SetLocationOption(8); // Castle
 
-        protected void EscapingLocationOnConsequence(CharacterCreation characterCreation) => CulturedStartHelper.SetLocationOption(9); // Escaping
+        protected void EscapingLocationOnConsequence(CharacterCreation characterCreation) => Manager.SetLocationOption(9); // Escaping
 
         protected void DoNothingOnApply(CharacterCreation characterCreation) { }
 
-        protected bool CastleLocationOnCondition() => CulturedStartHelper.StartOption == 7 || CulturedStartHelper.StartOption == 8;
+        protected bool CastleLocationOnCondition() => Manager.StartOption == 7 || Manager.StartOption == 8;
 
-        protected bool EscapingLocationOnCondition() => CulturedStartHelper.StartOption == 9;
+        protected bool EscapingLocationOnCondition() => Manager.StartOption == 9;
     }
 }

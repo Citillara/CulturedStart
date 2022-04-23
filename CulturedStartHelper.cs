@@ -7,78 +7,24 @@ using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.Core;
-using TaleWorlds.Library;
 using TaleWorlds.ObjectSystem;
 
 namespace zCulturedStart
 {
     public static class CulturedStartHelper
     {
-        // 0 = Default, 1 = Skip
-        public static int QuestOption { get; set; }
-
-        // 0 = Default, 1 = Merchant, 2 = Exiled, 3 = Mercenary, 4 = Looter, 5 = Vassal, 6 = Kingdom, 7 = Holding, 8 = Landed Vassal, 9 = Escaped Prisoner
-        public static int StartOption { get; set; }
-
-        // 0 = Hometown, 1 = Random, 2 - 7 = Specific Town, 8 = Castle, 9 = Escaping
-        public static int LocationOption { get; set; }
-
-        public static Settlement CastleToAdd { get; set; }
-
-        public static Hero CaptorToEscapeFrom { get; set; }
-
-        public static Settlement StartingSettlement
-        {
-            get
-            {
-                switch (LocationOption)
-                {
-                    case 0:
-                        return Hero.MainHero.HomeSettlement;
-                    case 1:
-                        return Settlement.FindAll(settlement => settlement.IsTown).GetRandomElementInefficiently();
-                    case 2:
-                        return Settlement.Find("town_A8");
-                    case 3:
-                        return Settlement.Find("town_B2");
-                    case 4:
-                        return Settlement.Find("town_EW2");
-                    case 5:
-                        return Settlement.Find("town_S2");
-                    case 6:
-                        return Settlement.Find("town_K4");
-                    case 7:
-                        return Settlement.Find("town_V3");
-                    case 8:
-                        return CastleToAdd;
-                    default:
-                        return Settlement.Find("tutorial_training_field");
-                }
-            }
-        }
-
-        public static Vec2 StartingPosition => LocationOption != 9 ? StartingSettlement.GatePosition : CaptorToEscapeFrom.PartyBelongedTo.Position2D;
-
-        public static void SetQuestOption(int questOption) => QuestOption = questOption;
-
-        public static void SetStartOption(int startOption) => StartOption = startOption;
-
-        public static void SetLocationOption(int locationOption) => LocationOption = locationOption;
-
         public static void ApplyStartOptions()
         {
             // Take away all the stuff to apply to each option
             GiveGoldAction.ApplyBetweenCharacters(Hero.MainHero, null, Hero.MainHero.Gold, true);
             PartyBase.MainParty.ItemRoster.Clear();
-            SetCastleToAdd();
-            SetCaptorToEscapeFrom();
-            MobileParty.MainParty.Position2D = StartingPosition;
+            MobileParty.MainParty.Position2D = CulturedStartManager.Current.StartingPosition;
             if (GameStateManager.Current.ActiveState is MapState mapState)
             {
                 mapState.Handler.ResetCamera(true, true);
                 mapState.Handler.TeleportCameraToMainParty();
             }
-            switch (StartOption)
+            switch (CulturedStartManager.Current.StartOption)
             {
                 case 0: // Default
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 1000, true);
@@ -171,13 +117,18 @@ namespace zCulturedStart
             // Culture swap
         }
 
+        public static Settlement GetCastleToAdd() => (from settlement in Settlement.All
+                                                      where settlement.Culture == Hero.MainHero.Culture && settlement.IsCastle
+                                                      select settlement).GetRandomElementInefficiently();
+
+        public static Hero GetCaptorToEscapeFrom() => Hero.FindAll(hero => (hero.Culture == Hero.MainHero.Culture) && hero.IsAlive && hero.MapFaction != null && !hero.MapFaction.IsMinorFaction && hero.IsPartyLeader && !hero.PartyBelongedTo.IsHolding).GetRandomElementInefficiently();
+
         private static void SetEquipment(Hero hero, int tier)
         {
             CharacterObject idealTroop = (from character in CharacterObject.All
                                           where character.Tier == tier && character.Culture == hero.Culture && !character.IsHero && !character.Equipment.IsEmpty()
                                           select character).GetRandomElementInefficiently();
-            Equipment equipment = idealTroop.Equipment;
-            hero.BattleEquipment.FillFrom(equipment);
+            hero.BattleEquipment.FillFrom(idealTroop.Equipment);
         }
 
         private static void SetRelationWithRuler()
@@ -204,33 +155,10 @@ namespace zCulturedStart
             if (lord != null)
             {
                 // Adding to prevent crash on custom cultures with no kingdom
-                Clan targetclan = lord.Clan;
                 CharacterRelationManager.SetHeroRelation(mainHero, lord, 10);
-                ChangeKingdomAction.ApplyByJoinToKingdom(mainHero.Clan, targetclan.Kingdom, false);
+                ChangeKingdomAction.ApplyByJoinToKingdom(mainHero.Clan, lord.Clan.Kingdom, false);
                 Hero.MainHero.Clan.Influence = 10;
             }
-        }
-
-        private static void SetCastleToAdd()
-        {
-            Settlement castle;
-            castle = (from settlement in Settlement.All
-                      where settlement.Culture == Hero.MainHero.Culture && settlement.IsCastle
-                      select settlement).GetRandomElementInefficiently();
-            if (castle == null) // Adding this for custom cultures that don't have any land to start
-            {
-                castle = (from settlement in Settlement.All
-                          where settlement.IsCastle
-                          select settlement).GetRandomElementInefficiently();
-            }
-            CastleToAdd = castle;
-        }
-
-        private static void SetCaptorToEscapeFrom()
-        {
-            Hero mainHero = Hero.MainHero;
-            Hero captor = Hero.FindAll(hero => (hero.Culture == mainHero.Culture) && hero.IsAlive && hero.MapFaction != null && !hero.MapFaction.IsMinorFaction && hero.IsPartyLeader && !hero.PartyBelongedTo.IsHolding).GetRandomElementInefficiently();
-            CaptorToEscapeFrom = captor;
         }
 
         private static void AddTroops(int tier, int num)
@@ -256,11 +184,10 @@ namespace zCulturedStart
         private static void AddCompanion(int num, int gold, bool shouldCreateParty)
         {
             Hero mainHero = Hero.MainHero;
-            CultureObject culture = StartingSettlement.Culture;
             for (int i = 0; i < num; i++)
             {
                 CharacterObject wanderer = (from character in CharacterObject.All
-                                            where character.Occupation == Occupation.Wanderer && (character.Culture == mainHero.Culture || character.Culture == culture)
+                                            where character.Occupation == Occupation.Wanderer && (character.Culture == mainHero.Culture || character.Culture == CulturedStartManager.Current.StartingSettlement.Culture)
                                             select character).GetRandomElementInefficiently();
                 Settlement randomSettlement = (from settlement in Settlement.All
                                                where settlement.Culture == wanderer.Culture && settlement.IsTown
@@ -308,15 +235,16 @@ namespace zCulturedStart
             AddHeroToPartyAction.Apply(exiledHero, MobileParty.MainParty, true);
         }
 
-        private static void AddCastle() => ChangeOwnerOfSettlementAction.ApplyByKingDecision(Hero.MainHero, CastleToAdd);
+        private static void AddCastle() => ChangeOwnerOfSettlementAction.ApplyByKingDecision(Hero.MainHero, GetCastleToAdd());
 
         private static void CreateKingdom() => Campaign.Current.KingdomManager.CreateKingdom(Clan.PlayerClan.Name, Clan.PlayerClan.InformalName, Clan.PlayerClan.Culture, Clan.PlayerClan);
 
         private static void EscapeFromCaptor() // Escaped Prisoner start 
         {
-            if (CaptorToEscapeFrom != null)
+            Hero captor = GetCaptorToEscapeFrom();
+            if (captor != null)
             {
-                CharacterRelationManager.SetHeroRelation(Hero.MainHero, CaptorToEscapeFrom, -50);
+                CharacterRelationManager.SetHeroRelation(Hero.MainHero, captor, -50);
             }
             // Using Looter gear as baseline
             CharacterObject character = MBObjectManager.Instance.GetObject<CharacterObject>("looter");

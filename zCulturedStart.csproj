@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CulturedStartCharacterCreationContent.cs" />
+    <Compile Include="CulturedStartManager.cs" />
     <Compile Include="CulturedStartSettings.cs" />
     <Compile Include="Patches\CSPatchCharacterCreationStageVM.cs" />
     <Compile Include="Patches\CSPatchCharacterCreationOption.cs" />
