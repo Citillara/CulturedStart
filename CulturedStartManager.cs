@@ -7,9 +7,9 @@ namespace zCulturedStart
 {
     public class CulturedStartManager
     {
-        private static readonly CulturedStartManager culturedStartManager = new CulturedStartManager();
+        private static readonly CulturedStartManager _culturedStartManager = new CulturedStartManager();
 
-        public static CulturedStartManager Current => culturedStartManager;
+        public static CulturedStartManager Current => _culturedStartManager;
 
         // 0 = Default, 1 = Skip
         public int QuestOption { get; set; }
