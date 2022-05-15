@@ -7,7 +7,7 @@ namespace zCulturedStart
 {
     public class CulturedStartCharacterCreationContent : SandboxCharacterCreationContent
     {
-        protected CulturedStartManager Manager => CulturedStartManager.Current;
+        public CulturedStartManager Manager => CulturedStartManager.Current;
 
         public void AddQuestMenu(CharacterCreation characterCreation)
         {

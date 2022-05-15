@@ -16,15 +16,18 @@ namespace zCulturedStart
         public static void ApplyStartOptions()
         {
             // Take away all the stuff to apply to each option
+            CulturedStartManager manager = CulturedStartManager.Current;
             GiveGoldAction.ApplyBetweenCharacters(Hero.MainHero, null, Hero.MainHero.Gold, true);
             PartyBase.MainParty.ItemRoster.Clear();
-            MobileParty.MainParty.Position2D = CulturedStartManager.Current.StartingPosition;
+            manager.SetCastleToAdd();
+            manager.SetCaptorToEscapeFrom();
+            MobileParty.MainParty.Position2D = manager.StartingPosition;
             if (GameStateManager.Current.ActiveState is MapState mapState)
             {
                 mapState.Handler.ResetCamera(true, true);
                 mapState.Handler.TeleportCameraToMainParty();
             }
-            switch (CulturedStartManager.Current.StartOption)
+            switch (manager.StartOption)
             {
                 case 0: // Default
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 1000, true);
@@ -116,12 +119,6 @@ namespace zCulturedStart
             }
             // Culture swap
         }
-
-        public static Settlement GetCastleToAdd() => (from settlement in Settlement.All
-                                                      where settlement.Culture == Hero.MainHero.Culture && settlement.IsCastle
-                                                      select settlement).GetRandomElementInefficiently();
-
-        public static Hero GetCaptorToEscapeFrom() => Hero.FindAll(hero => (hero.Culture == Hero.MainHero.Culture) && hero.IsAlive && hero.MapFaction != null && !hero.MapFaction.IsMinorFaction && hero.IsPartyLeader && !hero.PartyBelongedTo.IsHolding).GetRandomElementInefficiently();
 
         private static void SetEquipment(Hero hero, int tier)
         {
@@ -235,13 +232,13 @@ namespace zCulturedStart
             AddHeroToPartyAction.Apply(exiledHero, MobileParty.MainParty, true);
         }
 
-        private static void AddCastle() => ChangeOwnerOfSettlementAction.ApplyByKingDecision(Hero.MainHero, GetCastleToAdd());
+        private static void AddCastle() => ChangeOwnerOfSettlementAction.ApplyByKingDecision(Hero.MainHero, CulturedStartManager.Current.CastleToAdd);
 
         private static void CreateKingdom() => Campaign.Current.KingdomManager.CreateKingdom(Clan.PlayerClan.Name, Clan.PlayerClan.InformalName, Clan.PlayerClan.Culture, Clan.PlayerClan);
 
         private static void EscapeFromCaptor() // Escaped Prisoner start 
         {
-            Hero captor = GetCaptorToEscapeFrom();
+            Hero captor = CulturedStartManager.Current.CaptorToEscapeFrom;
             if (captor != null)
             {
                 CharacterRelationManager.SetHeroRelation(Hero.MainHero, captor, -50);

@@ -1,4 +1,5 @@
-﻿using TaleWorlds.CampaignSystem;
+﻿using System.Linq;
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -19,6 +20,10 @@ namespace zCulturedStart
 
         // 0 = Hometown, 1 = Random, 2 - 7 = Specific Town, 8 = Castle, 9 = Escaping
         public int LocationOption { get; set; }
+
+        public Settlement CastleToAdd { get; set; }
+
+        public Hero CaptorToEscapeFrom { get; set; }
 
         public Settlement StartingSettlement
         {
@@ -43,19 +48,25 @@ namespace zCulturedStart
                     case 7:
                         return Settlement.Find("town_V3");
                     case 8:
-                        return CulturedStartHelper.GetCastleToAdd();
+                        return CastleToAdd;
                     default:
                         return Settlement.Find("tutorial_training_field");
                 }
             }
         }
 
-        public Vec2 StartingPosition => LocationOption != 9 ? StartingSettlement.GatePosition : CulturedStartHelper.GetCaptorToEscapeFrom().PartyBelongedTo.Position2D;
+        public Vec2 StartingPosition => LocationOption != 9 ? StartingSettlement.GatePosition : CaptorToEscapeFrom.PartyBelongedTo.Position2D;
 
         public void SetQuestOption(int questOption) => QuestOption = questOption;
 
         public void SetStartOption(int startOption) => StartOption = startOption;
 
         public void SetLocationOption(int locationOption) => LocationOption = locationOption;
+
+        public void SetCastleToAdd() => CastleToAdd = (from settlement in Settlement.All
+                                                       where settlement.Culture == Hero.MainHero.Culture && settlement.IsCastle
+                                                       select settlement).GetRandomElementInefficiently();
+
+        public void SetCaptorToEscapeFrom() => CaptorToEscapeFrom = Hero.FindAll(hero => (hero.Culture == Hero.MainHero.Culture) && hero.IsAlive && hero.MapFaction != null && !hero.MapFaction.IsMinorFaction && hero.IsPartyLeader && !hero.PartyBelongedTo.IsHolding).GetRandomElementInefficiently();
     }
 }
