@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using StoryMode.Quests.FirstPhase;
 
-namespace zCulturedStart
+namespace zCulturedStart.Patches
 {
     [HarmonyPatch(typeof(BannerInvestigationQuest), "OnStartQuest")]
     public class CSPatchBannerInvestigationQuest
