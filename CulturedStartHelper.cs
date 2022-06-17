@@ -1,5 +1,4 @@
 ﻿using Helpers;
-using MountAndBlade.CampaignBehaviors;
 using System.Linq;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
@@ -190,7 +189,7 @@ namespace zCulturedStart
                                                where settlement.Culture == wanderer.Culture && settlement.IsTown
                                                select settlement).GetRandomElementInefficiently();
                 Hero companion = HeroCreator.CreateSpecialHero(wanderer, randomSettlement, null, null, 33);
-                Campaign.Current.GetCampaignBehavior<IHeroCreationCampaignBehavior>().DeriveSkillsFromTraits(companion, wanderer);
+                companion.HeroDeveloper.DeriveSkillsFromTraits(false, wanderer);
                 SetEquipment(companion, 4);
                 companion.HasMet = true;
                 companion.Clan = randomSettlement.OwnerClan;
@@ -221,7 +220,7 @@ namespace zCulturedStart
                                            where settlement.Culture == wanderer.Culture && settlement.IsTown
                                            select settlement).GetRandomElementInefficiently();
             Hero exiledHero = HeroCreator.CreateSpecialHero(wanderer, randomSettlement, null, null, 33);
-            Campaign.Current.GetCampaignBehavior<IHeroCreationCampaignBehavior>().DeriveSkillsFromTraits(exiledHero, wanderer);
+            exiledHero.HeroDeveloper.DeriveSkillsFromTraits(false, wanderer);
             GiveGoldAction.ApplyBetweenCharacters(null, exiledHero, 4000, true);
             exiledHero.BattleEquipment.FillFrom(exiledHeroEquipment);
             mainhero.BattleEquipment.FillFrom(mainHeroEquipment);

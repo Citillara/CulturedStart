@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -67,6 +68,6 @@ namespace zCulturedStart
                                                        where settlement.Culture == Hero.MainHero.Culture && settlement.IsCastle
                                                        select settlement).GetRandomElementInefficiently();
 
-        public void SetCaptorToEscapeFrom() => CaptorToEscapeFrom = Hero.FindAll(hero => (hero.Culture == Hero.MainHero.Culture) && hero.IsAlive && hero.MapFaction != null && !hero.MapFaction.IsMinorFaction && hero.IsPartyLeader && !hero.PartyBelongedTo.IsHolding).GetRandomElementInefficiently();
+        public void SetCaptorToEscapeFrom() => CaptorToEscapeFrom = Hero.FindAll(hero => (hero.Culture == Hero.MainHero.Culture) && hero.IsAlive && hero.MapFaction != null && !hero.MapFaction.IsMinorFaction && hero.IsPartyLeader && hero.PartyBelongedTo.DefaultBehavior != AiBehavior.Hold).GetRandomElementInefficiently();
     }
 }
