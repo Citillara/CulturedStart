@@ -170,7 +170,6 @@ namespace zCulturedStart
             CharacterObject character = MBObjectManager.Instance.GetObject<CharacterObject>("looter");
             PartyBase.MainParty.AddElementToMemberRoster(character, num, false);
             Hero.MainHero.BattleEquipment.FillFrom(character.Equipment);
-            Hero.MainHero.CivilianEquipment.FillFrom(character.Equipment);
         }
 
         private static void AddCompanions(int num) => AddCompanion(num, 2000, false);
@@ -245,7 +244,6 @@ namespace zCulturedStart
             // Using Looter gear as baseline
             CharacterObject character = MBObjectManager.Instance.GetObject<CharacterObject>("looter");
             Hero.MainHero.BattleEquipment.FillFrom(character.Equipment);
-            Hero.MainHero.CivilianEquipment.FillFrom(character.Equipment);
         }
     }
 }
