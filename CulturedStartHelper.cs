@@ -116,7 +116,6 @@ namespace zCulturedStart
                 default:
                     break;
             }
-            // Culture swap
         }
 
         private static void SetEquipment(Hero hero, int tier)

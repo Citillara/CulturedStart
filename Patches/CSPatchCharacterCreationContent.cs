@@ -25,7 +25,10 @@ namespace zCulturedStart.Patches
                 {
                     characterCreationContent.AddQuestMenu(characterCreation);
                 }
-                characterCreationContent.AddStartMenu(characterCreation);
+                if (!Harmony.HasAnyPatches("BannerKings"))
+                {
+                    characterCreationContent.AddStartMenu(characterCreation);
+                }
                 characterCreationContent.AddLocationMenu(characterCreation);
             }
         }
