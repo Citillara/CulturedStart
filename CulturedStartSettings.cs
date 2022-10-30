@@ -1,7 +1,7 @@
 ﻿using MCM.Abstractions.Attributes;
 using MCM.Abstractions.Attributes.v2;
-using MCM.Abstractions.Dropdown;
-using MCM.Abstractions.Settings.Base.Global;
+using MCM.Abstractions.Base.Global;
+using MCM.Common;
 
 namespace zCulturedStart
 {
@@ -25,6 +25,6 @@ namespace zCulturedStart
 
         [SettingPropertyDropdown("{=CulturedStart56}Skip Character Creation Menus", Order = 2, RequireRestart = false, HintText = "{=CulturedStart57}Skip character creation menus and start with a random culture and skipped options set to default. Default is None.")]
         [SettingPropertyGroup("{=CulturedStart51}Debug", GroupOrder = 0)]
-        public DropdownDefault<string> MenusToSkip { get; set; } = new DropdownDefault<string>(new string[] { "{=CulturedStart58}None", "{=CulturedStart59}Base", "{=CulturedStart60}All" }, 0);
+        public Dropdown<string> MenusToSkip { get; set; } = new Dropdown<string>(new string[] { "{=CulturedStart58}None", "{=CulturedStart59}Base", "{=CulturedStart60}All" }, 0);
     }
 }
