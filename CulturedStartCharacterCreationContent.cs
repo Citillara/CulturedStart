@@ -90,25 +90,25 @@ namespace zCulturedStart
 
         protected void SkipQuestOnConsequence(CharacterCreation characterCreation) => Manager.SetQuestOption(1);
 
-        protected void DefaultStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(0);
+        protected void DefaultStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStoryOption(0);
 
-        protected void MerchantStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(1);
+        protected void MerchantStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStoryOption(1);
 
-        protected void ExiledStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(2);
+        protected void ExiledStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStoryOption(2);
 
-        protected void MercenaryStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(3);
+        protected void MercenaryStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStoryOption(3);
 
-        protected void LooterStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(4);
+        protected void LooterStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStoryOption(4);
 
-        protected void VassalStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(5);
+        protected void VassalStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStoryOption(5);
 
-        protected void KingdomStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(6);
+        protected void KingdomStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStoryOption(6);
 
-        protected void HoldingStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(7);
+        protected void HoldingStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStoryOption(7);
 
-        protected void LandedVassalStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(8);
+        protected void LandedVassalStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStoryOption(8);
 
-        protected void EscapedStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStartOption(9);
+        protected void EscapedStartOnConsequence(CharacterCreation characterCreation) => Manager.SetStoryOption(9);
 
         protected void HometownLocationOnConsequence(CharacterCreation characterCreation) => Manager.SetLocationOption(0); // Hometown
 
@@ -132,8 +132,8 @@ namespace zCulturedStart
 
         protected void DoNothingOnApply(CharacterCreation characterCreation) { }
 
-        protected bool CastleLocationOnCondition() => Manager.StartOption == 7 || Manager.StartOption == 8;
+        protected bool CastleLocationOnCondition() => Manager.StoryOption == 7 || Manager.StoryOption == 8;
 
-        protected bool EscapingLocationOnCondition() => Manager.StartOption == 9;
+        protected bool EscapingLocationOnCondition() => Manager.StoryOption == 9;
     }
 }

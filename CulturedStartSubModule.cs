@@ -30,6 +30,10 @@ namespace zCulturedStart
         // Skip the campaign intro.
         public override void OnNewGameCreated(Game game, object initializerObject)
         {
+            CulturedStartManager manager = CulturedStartManager.Current;
+            manager.SetQuestOption(0);
+            manager.SetStoryOption(0);
+            manager.SetLocationOption(0);
             if (CulturedStartSettings.Instance.ShouldSkipCampaignIntro)
             {
                 _harmony.Patch(AccessTools.Method(typeof(SandBoxGameManager), "OnLoadFinished"), transpiler: new HarmonyMethod(AccessTools.Method(typeof(CSPatchGameManager), "Transpiler")));

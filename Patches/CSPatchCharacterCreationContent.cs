@@ -42,7 +42,7 @@ namespace zCulturedStart.Patches
                 yield return AccessTools.Method(typeof(StoryModeCharacterCreationContent), "OnCharacterCreationFinalized");
             }
 
-            public static void Postfix() => CulturedStartHelper.ApplyStartOptions();
+            public static void Postfix() => CulturedStartAction.Apply(CulturedStartManager.Current.StoryOption, CulturedStartManager.Current.LocationOption);
         }
     }
 }

@@ -87,7 +87,7 @@
     <Compile Include="Patches\CSPatchCharacterCreationStageVM.cs" />
     <Compile Include="Patches\CSPatchCharacterCreationOption.cs" />
     <Compile Include="Patches\CSPatchCharacterCreationContent.cs" />
-    <Compile Include="CulturedStartHelper.cs" />
+    <Compile Include="CulturedStartAction.cs" />
     <Compile Include="Patches\CSPatchBannerInvestigationQuest.cs" />
     <Compile Include="CulturedStartSubModule.cs" />
     <Compile Include="Patches\CSPatchCampaignBehavior.cs" />
