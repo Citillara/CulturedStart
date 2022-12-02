@@ -15,8 +15,8 @@ namespace zCulturedStart
         public static void Apply(int storyOption, int locationOption)
         {
             Hero mainHero = Hero.MainHero;
-            Hero ruler = Hero.FindAll(hero => (hero.Culture == mainHero.Culture) && hero.IsAlive && hero.IsFactionLeader && !hero.MapFaction.IsMinorFaction).GetRandomElementInefficiently();
-            Hero captor = Hero.FindAll(hero => (hero.Culture == mainHero.Culture) && hero.IsAlive && hero.MapFaction != null && !hero.MapFaction.IsMinorFaction && hero.IsPartyLeader && hero.PartyBelongedTo.DefaultBehavior != AiBehavior.Hold).GetRandomElementInefficiently();
+            Hero ruler = Hero.FindAll(hero => hero.Culture == mainHero.Culture && hero.IsAlive && hero.IsFactionLeader && !hero.MapFaction.IsMinorFaction).GetRandomElementInefficiently();
+            Hero captor = Hero.FindAll(hero => hero.Culture == mainHero.Culture && hero.IsAlive && hero.MapFaction != null && !hero.MapFaction.IsMinorFaction && hero.IsPartyLeader && hero.PartyBelongedTo.DefaultBehavior != AiBehavior.Hold).GetRandomElementInefficiently();
             Settlement startingSettlement = null;
             // Take away all the stuff to apply to each option
             GiveGoldAction.ApplyBetweenCharacters(mainHero, null, mainHero.Gold, true);
@@ -127,7 +127,7 @@ namespace zCulturedStart
             if (isMercenary)
             {
                 idealTroop = (from character in CharacterObject.All
-                              where character.Tier == tier && character.Culture == mainHero.Culture && !character.IsHero && (character.Occupation == Occupation.Soldier || character.Occupation == Occupation.Mercenary) && !character.Equipment.IsEmpty()
+                              where character.Tier == tier && character.Culture == mainHero.Culture && !character.IsHero && character.Occupation == Occupation.Mercenary && !character.Equipment.IsEmpty()
                               select character).GetRandomElementInefficiently();
             }
             else if (isLooter)
@@ -135,7 +135,7 @@ namespace zCulturedStart
                 idealTroop = MBObjectManager.Instance.GetObject<CharacterObject>("looter");
                 tier = idealTroop.Tier;
             }
-            if (tier > -1)
+            if (idealTroop != null)
             {
                 mainHero.BattleEquipment.FillFrom(idealTroop.Equipment);
             }
@@ -144,9 +144,9 @@ namespace zCulturedStart
                 int troopTier = i + 1;
                 int num = troops[i];
                 CharacterObject troop = (from character in CharacterObject.All
-                                         where character.Tier == troopTier && character.Culture == mainHero.Culture && !character.IsHero && (character.Occupation == Occupation.Soldier || character.Occupation == Occupation.Mercenary)
+                                         where character.Tier == troopTier && character.Culture == mainHero.Culture && !character.IsHero && character.Occupation == Occupation.Soldier
                                          select character).GetRandomElementInefficiently();
-                if (idealTroop.Occupation == Occupation.Bandit)
+                if (idealTroop?.Occupation == Occupation.Bandit)
                 {
                     troop = idealTroop;
                 }
@@ -155,17 +155,20 @@ namespace zCulturedStart
             for (int i = 0; i < companions; i++)
             {
                 CharacterObject wanderer = (from character in CharacterObject.All
-                                            where character.Occupation == Occupation.Wanderer && (character.Culture == mainHero.Culture)
+                                            where character.Occupation == Occupation.Wanderer && character.Culture == mainHero.Culture
                                             select character).GetRandomElementInefficiently();
                 Settlement randomSettlement = (from settlement in Settlement.All
                                                where settlement.Culture == wanderer.Culture && settlement.IsTown
                                                select settlement).GetRandomElementInefficiently();
                 Hero companion = HeroCreator.CreateSpecialHero(wanderer, randomSettlement, null, null, 33);
                 companion.HeroDeveloper.DeriveSkillsFromTraits(false, wanderer);
-                companion.BattleEquipment.FillFrom(idealTroop.Equipment);
                 companion.HasMet = true;
                 companion.Clan = randomSettlement.OwnerClan;
                 companion.ChangeState(Hero.CharacterStates.Active);
+                if (idealTroop != null)
+                {
+                    companion.BattleEquipment.FillFrom(idealTroop.Equipment);
+                }
                 AddCompanionAction.Apply(Clan.PlayerClan, companion);
                 AddHeroToPartyAction.Apply(companion, mainHero.PartyBelongedTo, false);
                 GiveGoldAction.ApplyBetweenCharacters(null, companion, 2000, true);
