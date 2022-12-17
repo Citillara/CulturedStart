@@ -32,10 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\Bannerlord.Harmony\bin\Win64_Shipping_Client\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="MCMv5">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\Bannerlord.MBOptionScreen\bin\Win64_Shipping_Client\MCMv5.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\261550\2859188632\bin\Win64_Shipping_Client\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="SandBox">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\SandBox\bin\Win64_Shipping_Client\SandBox.dll</HintPath>
@@ -83,16 +80,12 @@
   <ItemGroup>
     <Compile Include="CulturedStartCharacterCreationContent.cs" />
     <Compile Include="CulturedStartManager.cs" />
-    <Compile Include="CulturedStartSettings.cs" />
-    <Compile Include="Patches\CSPatchCharacterCreationStageVM.cs" />
     <Compile Include="Patches\CSPatchCharacterCreationOption.cs" />
     <Compile Include="Patches\CSPatchCharacterCreationContent.cs" />
     <Compile Include="CulturedStartAction.cs" />
     <Compile Include="Patches\CSPatchBannerInvestigationQuest.cs" />
     <Compile Include="CulturedStartSubModule.cs" />
     <Compile Include="Patches\CSPatchCampaignBehavior.cs" />
-    <Compile Include="Patches\CSPatchCharacterCreationState.cs" />
-    <Compile Include="Patches\CSPatchGameManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

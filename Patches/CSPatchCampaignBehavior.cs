@@ -18,7 +18,7 @@ namespace zCulturedStart.Patches
             {
                 ___SkipTutorialMission = true;
                 TutorialPhase.Instance.PlayerTalkedWithBrotherForTheFirstTime();
-                StoryModeManager.Current.MainStoryLine.CompleteTutorialPhase(false);
+                StoryModeManager.Current.MainStoryLine.CompleteTutorialPhase(true);
             }
         }
 

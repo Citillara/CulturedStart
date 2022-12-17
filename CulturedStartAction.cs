@@ -19,8 +19,8 @@ namespace zCulturedStart
             Hero captor = Hero.FindAll(hero => hero.Culture == mainHero.Culture && hero.IsAlive && hero.MapFaction != null && !hero.MapFaction.IsMinorFaction && hero.IsPartyLeader && hero.PartyBelongedTo.DefaultBehavior != AiBehavior.Hold).GetRandomElementInefficiently();
             Settlement startingSettlement = null;
             // Take away all the stuff to apply to each option
-            GiveGoldAction.ApplyBetweenCharacters(mainHero, null, mainHero.Gold, true);
             mainHero.PartyBelongedTo.ItemRoster.Clear();
+            GiveGoldAction.ApplyBetweenCharacters(mainHero, null, mainHero.Gold, true);
             switch (locationOption)
             {
                 case 0:
@@ -121,9 +121,9 @@ namespace zCulturedStart
             CharacterObject idealTroop = (from character in CharacterObject.All
                                           where character.Tier == tier && character.Culture == mainHero.Culture && !character.IsHero && !character.Equipment.IsEmpty()
                                           select character).GetRandomElementInefficiently();
-            GiveGoldAction.ApplyBetweenCharacters(null, mainHero, gold, true);
             mainHero.PartyBelongedTo.ItemRoster.AddToCounts(DefaultItems.Grain, grain);
             mainHero.PartyBelongedTo.ItemRoster.AddToCounts(MBObjectManager.Instance.GetObject<ItemObject>("mule"), mules);
+            GiveGoldAction.ApplyBetweenCharacters(null, mainHero, gold, true);
             if (isMercenary)
             {
                 idealTroop = (from character in CharacterObject.All
