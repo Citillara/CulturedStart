@@ -163,7 +163,6 @@ namespace zCulturedStart
                 Hero companion = HeroCreator.CreateSpecialHero(wanderer, randomSettlement, null, null, 33);
                 companion.HeroDeveloper.DeriveSkillsFromTraits(false, wanderer);
                 companion.HasMet = true;
-                companion.Clan = randomSettlement.OwnerClan;
                 companion.ChangeState(Hero.CharacterStates.Active);
                 if (idealTroop != null)
                 {
