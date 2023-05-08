@@ -1,4 +1,5 @@
 ﻿using Helpers;
+using System;
 using System.Linq;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
@@ -6,15 +7,38 @@ using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.ObjectSystem;
 
 namespace zCulturedStart
 {
     public static class CulturedStartAction
     {
+        public static readonly Color RED = new Color(1f, 0.2f, 0.2f);
+
         public static void Apply(int storyOption, int locationOption)
         {
-            Hero mainHero = Hero.MainHero;
+            Hero mainHero = null;
+            try
+            {
+                // This thing throws an exception if it's null instead of returning null
+                mainHero = Hero.MainHero;
+            }
+            catch (NullReferenceException)
+            {
+                InformationManager.DisplayMessage(new InformationMessage($"CulturedStart Error : No hero. ({storyOption};{locationOption}). Please report this bug and/or try to change mod load order", RED));
+                return;
+            }
+            if (mainHero.PartyBelongedTo == null)
+            {
+                InformationManager.DisplayMessage(new InformationMessage($"CulturedStart Error : No party. ({storyOption};{locationOption}). Please report this bug and/or try to change mod load order"));
+                return;
+            }
+            if (mainHero.PartyBelongedTo.ItemRoster == null)
+            {
+                InformationManager.DisplayMessage(new InformationMessage($"CulturedStart Error : No inventory. ({storyOption};{locationOption}). Please report this bug and/or try to change mod load order"));
+                return;
+            }
             Hero ruler = Hero.FindAll(hero => hero.Culture == mainHero.Culture && hero.IsAlive && hero.IsFactionLeader && !hero.MapFaction.IsMinorFaction).GetRandomElementInefficiently();
             Hero captor = Hero.FindAll(hero => hero.Culture == mainHero.Culture && hero.IsAlive && hero.MapFaction != null && !hero.MapFaction.IsMinorFaction && hero.IsPartyLeader && hero.PartyBelongedTo.DefaultBehavior != AiBehavior.Hold).GetRandomElementInefficiently();
             Settlement startingSettlement = null;
@@ -24,7 +48,18 @@ namespace zCulturedStart
             switch (locationOption)
             {
                 case 0:
+                    // HomeSettelement is not always the Hero's correct culture hometown
                     startingSettlement = mainHero.HomeSettlement;
+
+                    if (mainHero.Culture.Id != startingSettlement.Culture.Id)
+                    {
+                        // Not the correct one, let's find one that would be fitting
+                        Settlement settlement1 = Settlement.FindAll(settlement => settlement.IsTown && settlement.Culture.Id == mainHero.Culture.Id).GetRandomElementInefficiently();
+                        if (settlement1 != null)
+                        {
+                            startingSettlement = settlement1;
+                        }
+                    }
                     break;
                 case 1:
                     startingSettlement = Settlement.FindAll(settlement => settlement.IsTown).GetRandomElementInefficiently();
