@@ -1,4 +1,5 @@
-﻿using Helpers;
+﻿using HarmonyLib;
+using Helpers;
 using System;
 using System.Linq;
 using TaleWorlds.CampaignSystem;
@@ -6,6 +7,7 @@ using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Settlements;
+using TaleWorlds.CampaignSystem.Settlements.Locations;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.ObjectSystem;
@@ -26,17 +28,20 @@ namespace zCulturedStart
             }
             catch (NullReferenceException)
             {
-                InformationManager.DisplayMessage(new InformationMessage($"CulturedStart Error : No hero. ({storyOption};{locationOption}). Please report this bug and/or try to change mod load order", RED));
+                // We can't really reconver in this case
+                ErrorMessage("No hero", storyOption, locationOption);
                 return;
             }
             if (mainHero.PartyBelongedTo == null)
             {
-                InformationManager.DisplayMessage(new InformationMessage($"CulturedStart Error : No party. ({storyOption};{locationOption}). Please report this bug and/or try to change mod load order"));
+                // We can't really reconver in this case. Maybe something to do later
+                ErrorMessage("No party", storyOption, locationOption);
                 return;
             }
             if (mainHero.PartyBelongedTo.ItemRoster == null)
             {
-                InformationManager.DisplayMessage(new InformationMessage($"CulturedStart Error : No inventory. ({storyOption};{locationOption}). Please report this bug and/or try to change mod load order"));
+                // We can't really reconver in this case. Maybe something to do later
+                ErrorMessage("No inventory", storyOption, locationOption);
                 return;
             }
             Hero ruler = Hero.FindAll(hero => hero.Culture == mainHero.Culture && hero.IsAlive && hero.IsFactionLeader && !hero.MapFaction.IsMinorFaction).GetRandomElementInefficiently();
@@ -90,7 +95,45 @@ namespace zCulturedStart
                 default:
                     break;
             }
-            mainHero.PartyBelongedTo.Position2D = locationOption != 9 ? (startingSettlement != null ? startingSettlement.GatePosition : Settlement.Find("tutorial_training_field").Position2D) : captor.PartyBelongedTo.Position2D;
+            if (locationOption != 9)
+            {
+                if (startingSettlement != null)
+                {
+                    mainHero.PartyBelongedTo.Position2D = GetSettelementSafePosition(startingSettlement);
+                }
+                else
+                {
+                    Settlement tutorialSettelement = Settlement.Find("tutorial_training_field");
+                    if (tutorialSettelement != null)
+                    {
+                        mainHero.PartyBelongedTo.Position2D = tutorialSettelement.Position2D;
+                    }
+                }
+            }
+            else // Escaping captor scenario
+            {
+                if (captor != null)
+                {
+                    if (captor.PartyBelongedTo != null)
+                    {
+                        // Original code. There should be some distance, but as the AI doesn't react immediately should be fine. 
+                        mainHero.PartyBelongedTo.Position2D = captor.PartyBelongedTo.Position2D;
+                    }
+                    else
+                    {
+                        // Graceful start even if it's a problem
+                        mainHero.PartyBelongedTo.Position2D = GetSettelementSafePosition(startingSettlement);
+                        ErrorMessage("Issue getting captor party", storyOption, locationOption);
+                    }
+                }
+                else
+                {
+                    // No captor ?!
+                    mainHero.PartyBelongedTo.Position2D = GetSettelementSafePosition(startingSettlement);
+                    ErrorMessage("No captor", storyOption, locationOption);
+                }
+            }
+
             if (GameStateManager.Current.ActiveState is MapState mapState)
             {
                 mapState.Handler.ResetCamera(true, true);
@@ -228,5 +271,31 @@ namespace zCulturedStart
                 mainHero.Clan.Influence = 100;
             }
         }
+
+        static Vec2 GetSettelementSafePosition(Settlement settlement)
+        {
+            if (settlement.IsTown)
+            {
+                return settlement.GatePosition;
+            }
+            else if (settlement.IsCastle)
+            {
+                return settlement.GatePosition;
+            }
+            return settlement.Position2D;
+        }
+
+        static void ErrorMessage(string message, int storyOption, int locationOption)
+        {
+            InformationManager.DisplayMessage(
+                new InformationMessage($"CulturedStart Error : {message}. ({storyOption};{locationOption}). Please report this bug and/or try to change mod load order", new Color(1f, 0.5f, 0f)));
+        }
+
+        static void WarningMessage(string message, int storyOption, int locationOption)
+        {
+            InformationManager.DisplayMessage(
+                new InformationMessage($"CulturedStart Warning : {message}. ({storyOption};{locationOption}). Please report this bug and/or try to change mod load order", new Color(1f, 1f, 0f)));
+        }
+
     }
 }
