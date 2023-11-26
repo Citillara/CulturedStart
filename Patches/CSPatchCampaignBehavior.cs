@@ -29,7 +29,7 @@ namespace zCulturedStart.Patches
             private static bool Prefix()
             {
                 DisableHeroAction.Apply(StoryModeHeroes.ElderBrother);
-                StoryModeHeroes.ElderBrother.Clan = CampaignData.NeutralFaction;
+                StoryModeHeroes.ElderBrother.Clan = Clan.PlayerClan;
                 return false;
             }
         }

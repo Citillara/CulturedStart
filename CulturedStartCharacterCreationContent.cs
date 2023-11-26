@@ -24,7 +24,20 @@ namespace zCulturedStart
             CharacterCreationCategory characterCreationCategory = characterCreationMenu.AddMenuCategory(null);
 
             // Default Start
-            characterCreationCategory.AddCategoryOption(new TextObject("{=CulturedStart09}A commoner (Default Start)", null), new TaleWorlds.Library.MBList<SkillObject>(), null, 0, 0, 0, null, new CharacterCreationOnSelect(DefaultStartOnConsequence), new CharacterCreationApplyFinalEffects(DoNothingOnApply), new TextObject("{=CulturedStart10}Setting off with your Father, Mother, Brother and your two younger siblings to a new town you'd heard was safer. But you did not make it.", null), null, 0, 0);
+            characterCreationCategory.AddCategoryOption(
+                new TextObject("{=CulturedStart09}A commoner (Default Start)", null),
+                new TaleWorlds.Library.MBList<SkillObject>(),
+                null,
+                0,
+                0,
+                0,
+                null, 
+                new CharacterCreationOnSelect(DefaultStartOnConsequence),
+                new CharacterCreationApplyFinalEffects(DoNothingOnApply),
+                new TextObject("{=CulturedStart10}Setting off with your Father, Mother, Brother and your two younger siblings to a new town you'd heard was safer. But you did not make it.", null),
+                null,
+                0,
+                0);
 
             // Merchant Start
             characterCreationCategory.AddCategoryOption(new TextObject("{=CulturedStart11}A budding caravanner", null), new TaleWorlds.Library.MBList<SkillObject> { DefaultSkills.Trade }, null, 1, 10, 0, null, new CharacterCreationOnSelect(MerchantStartOnConsequence), new CharacterCreationApplyFinalEffects(DoNothingOnApply), new TextObject("{=CulturedStart12}With what savings you could muster you purchased some mules and mercenaries.", null), null, 0, 0);

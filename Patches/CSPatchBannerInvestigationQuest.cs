@@ -9,7 +9,7 @@ namespace zCulturedStart.Patches
         // Skip the first quest "Investigate Neretzes' Folly".
         private static void Postfix(BannerInvestigationQuest __instance)
         {
-            if (CulturedStartManager.Current.QuestOption == 1)
+            if (CulturedStartManager.Current.SkipNeretzesFollyQuest)
             {
                 __instance.CompleteQuestWithSuccess();
             }

@@ -90,6 +90,8 @@
     <Compile Include="CulturedStartSubModule.cs" />
     <Compile Include="Patches\CSPatchCampaignBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenarios\BaseScenario.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
