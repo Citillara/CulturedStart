@@ -239,7 +239,7 @@ namespace zCulturedStart
                                                where settlement.Culture == wanderer.Culture && settlement.IsTown
                                                select settlement).GetRandomElementInefficiently();
                 Hero companion = HeroCreator.CreateSpecialHero(wanderer, randomSettlement, null, null, 33);
-                companion.HeroDeveloper.DeriveSkillsFromTraits(false, wanderer);
+                companion.HeroDeveloper.InitializeHeroDeveloper(false, wanderer);
                 companion.SetHasMet();
                 companion.ChangeState(Hero.CharacterStates.Active);
                 if (idealTroop != null)
