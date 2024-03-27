@@ -9,6 +9,11 @@ namespace zCulturedStart
     {
         public CulturedStartManager Manager => CulturedStartManager.Current;
 
+        protected override void OnInitialized(CharacterCreation characterCreation)
+        {
+            base.OnInitialized(characterCreation);
+        }
+
         public void AddQuestMenu(CharacterCreation characterCreation)
         {
             CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=CulturedStart01}Quest Options", null), new TextObject("{=CulturedStart02}How do you want to handle your quests?", null), null, CharacterCreationMenu.MenuTypes.MultipleChoice);

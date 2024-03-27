@@ -14,7 +14,16 @@ namespace zCulturedStart.Patches
             private static IEnumerable<MethodBase> TargetMethods()
             {
                 yield return AccessTools.Method(typeof(SandboxCharacterCreationContent), "OnInitialized");
-                yield return AccessTools.Method(typeof(StoryModeCharacterCreationContent), "OnInitialized");
+                yield return AccessTools.Method(typeof(StoryModeCharacterCreationContent), "OnInitialized"); 
+                var cekCharacterCreationContentType = AccessTools.TypeByName("CEKCharacterCreationContent");
+                if (cekCharacterCreationContentType != null)
+                {
+                    var cekOnInitialized = AccessTools.Method(cekCharacterCreationContentType, "OnInitialized");
+                    if (cekOnInitialized != null)
+                    {
+                        yield return cekOnInitialized;
+                    }
+                }
             }
 
             // Add the custom character creation menus.
